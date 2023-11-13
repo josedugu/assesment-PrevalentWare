@@ -1,0 +1,35 @@
+{
+  "name": "3",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rmdir /s /q dist",
+    "compile": "tsc",
+    "start": "npm run compile && node --env-file .env  ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && tsc",
+    "vanilla": "node --env-file .env  ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "Jose",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "@graphql-tools/merge": "^9.0.0",
+    "graphql": "^16.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josedugu/assesment-PrevalentWare.git"
+  },
+  "bugs": {
+    "url": "https://github.com/josedugu/assesment-PrevalentWare/issues"
+  },
+  "homepage": "https://github.com/josedugu/assesment-PrevalentWare#readme",
+  "description": ""
+}
