@@ -1,6 +1,6 @@
-import {buildSchema} from "graphql"
+import { buildSchema } from "graphql"
 
-export const usersGQLSchema=buildSchema(`
+export const usersGQLSchema = buildSchema(`
     enum Enum_RoleName {
         Admin
         Manager
@@ -10,7 +10,7 @@ export const usersGQLSchema=buildSchema(`
         name: Enum_RoleName
     }
     type user {
-        email: String!
+        email: String
         name: String!
         image: String!
         position: String

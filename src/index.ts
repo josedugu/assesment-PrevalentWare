@@ -5,7 +5,7 @@ import { resolvers } from "./resolvers/index.js";
 
 
 const PORT1 = process.env.PORT || 4000
-const server = new ApolloServer({
+export const server = new ApolloServer({
     typeDefs: mergedGQLSchema,
     resolvers: resolvers,
     introspection: true
@@ -13,12 +13,13 @@ const server = new ApolloServer({
 
 const start = async () => {
     try {
-        await startStandaloneServer(server, { listen: { port: Number(PORT1) },
-        context:async({req})=>{
-            const token = req.headers.authorization || '';
-            return {token}
-        }
-    });
+        await startStandaloneServer(server, {
+            listen: { port: Number(PORT1) },
+            context: async ({ req }) => {
+                const token = req.headers.authorization || '';
+                return { token }
+            }
+        });
         console.log("SERVIDOR CORRIENDO 🚀");
 
     } catch (error) {

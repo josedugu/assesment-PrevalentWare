@@ -10,3 +10,8 @@ export interface Token {
 export interface Email {
     email: string;
 }
+
+export interface timeInterval {
+    start:string,
+    end:string
+}

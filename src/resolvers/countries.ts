@@ -1,11 +1,11 @@
 import { Prisma } from "../db/dbconnection.js";
 import { validateToken, findRole } from "../utils/tokenValidation.js";
 import { GraphQLError } from 'graphql';
-import { Pagination } from "../utils/interfaces.js";
+import { Pagination, Token } from "../utils/interfaces.js";
 
-export const CountriesResolver={
-    Query:{
-        countries:async (_:any, args:Pagination, contextValue: any) =>{
+export const CountriesResolver = {
+    Query: {
+        countries: async (_: any, args: Pagination, contextValue: Token) => {
             const token = contextValue.token.replace("Bearer ", "");
             const session = await validateToken(token);
             if (!session) {
@@ -16,13 +16,13 @@ export const CountriesResolver={
                     },
                 });
             }
-            const roleId= session.User.roleId;
-            const role= await findRole(roleId ?? '');
-            if (role && role.name==="Admin" ||role && role.name==="Manager") {
+            const roleId = session.User.roleId;
+            const role = await findRole(roleId ?? '');
+            if (role && role.name === "Admin" || role && role.name === "Manager") {
                 try {
-                    const countries= await Prisma.country.findMany({
-                        skip: args.skip||0,
-                        take: args.take||10
+                    const countries = await Prisma.country.findMany({
+                        skip: args.skip || 0,
+                        take: args.take || 10
                     })
                     return {
                         success: true,

@@ -3,6 +3,19 @@ import { validateToken } from "../utils/tokenValidation.js";
 import { GraphQLError } from 'graphql';
 import { Pagination, Token, Email } from "../utils/interfaces.js";
 
+type UserType = [{
+    id: string;
+    email: string;
+    emailVerified: string | null;
+    termsAndConditionsAccepted: string | null;
+    name: string;
+    image: string;
+    position: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    roleId: string;
+}]
+
 export const UsersResolver = {
     Query: {
         users: async (_: any, args: Pagination, contextValue: Token) => {
@@ -28,7 +41,12 @@ export const UsersResolver = {
                     users
                 };
             } catch (error) {
-
+                throw new GraphQLError('BAD REQUEST', {
+                    extensions: {
+                        code: 'BAD REQUEST',
+                        http: { status: 400 },
+                    },
+                });
             }
         },
         userByEmail: async (_: any, args: Email, contextValue: any) => {
@@ -42,12 +60,22 @@ export const UsersResolver = {
                     },
                 });
             }
-            const user = await Prisma.user.findUnique({
-                where: {
-                    email: args.email
+            try {
+                const userEmailToFind = args.email
+                const user: UserType = await Prisma.$queryRaw`SELECT * FROM "User" WHERE email = ${userEmailToFind};`;
+                if (user.length > 0) {
+                    return user[0]
+                } else {
+                    throw new GraphQLError('USER NOT FOUND', {
+                        extensions: {
+                            code: 'USER NOT FOUND',
+                            http: { status: 404 },
+                        },
+                    });
                 }
-            })
-            if (!user) {
+
+            } catch (error) {
+                console.log(error);
                 throw new GraphQLError('USER NOT FOUND', {
                     extensions: {
                         code: 'USER NOT FOUND',
@@ -55,7 +83,7 @@ export const UsersResolver = {
                     },
                 });
             }
-            return user
+
         }
     }
 }

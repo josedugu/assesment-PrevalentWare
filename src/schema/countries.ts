@@ -1,6 +1,6 @@
-import {buildSchema} from "graphql"
+import { buildSchema } from "graphql"
 
-export const countriesGQLSchema=buildSchema(`
+export const countriesGQLSchema = buildSchema(`
     type Country {
         id: String
         name: String
